@@ -54,3 +54,25 @@ zad1_sz <- function(dane)
   print(kurtoza)
   
 }
+
+zad1_roz <-function(dane)
+{
+  szereg_roz = hist(dane)
+  
+  print("----sr arytmetyczna----")
+  sr_arytmetyczna = sum(szereg_roz$counts * szereg_roz$mids) / sum(szereg_roz$counts)
+  print(sr_arytmetyczna)
+  
+  print("----sr harmoniczna----")
+  sr_harmoniczna = sum(szereg_roz$counts) / sum(szereg_roz$counts / szereg_roz$mids)
+  print(sr_harmoniczna)
+  
+  print("----sr geometryczna----")
+  sr_geometryczna = (prod(szereg_roz$mids ^ szereg_roz$counts)) ^ (1 / sum(szereg_roz$counts))
+  print(sr_geometryczna)
+  
+  mediana = 
+  print(mediana)
+  
+  
+}
