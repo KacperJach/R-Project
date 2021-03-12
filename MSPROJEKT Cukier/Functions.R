@@ -57,7 +57,7 @@ zad1_sz <- function(dane)
 
 zad1_roz <-function(dane)
 {
-  szereg_roz = hist(dane)
+  szereg_roz = hist(dane, breaks = seq(min(dane), max(dane), length.out = 8))
   
   print("----sr arytmetyczna----")
   sr_arytmetyczna = sum(szereg_roz$counts * szereg_roz$mids) / sum(szereg_roz$counts)
@@ -71,8 +71,11 @@ zad1_roz <-function(dane)
   sr_geometryczna = (prod(szereg_roz$mids ^ szereg_roz$counts)) ^ (1 / sum(szereg_roz$counts))
   print(sr_geometryczna)
   
-  mediana = 
+  mediana = sum(szereg_roz$counts)/2
   print(mediana)
+  med = szereg_roz$breaks[4] - ((2*length(dane)/4)-)
+  print(length(dane))
+ 
   
   
 }
