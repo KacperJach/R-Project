@@ -50,7 +50,7 @@ zad1_sz <- function(dane)
   print(odchylenie_standard_obciazone)
   
   print("----Odchylenie przecietne-----")
-  odchylenie_przecietne = sum(szereg_szcz - sr_arytm)/ sum(length(dane))
+  odchylenie_przecietne = sum(abs(szereg_szcz - sr_arytm))/ length(szereg_szcz)
   print(odchylenie_przecietne)
   
   print("----Odchylenie przecietne od miediany-----")
@@ -84,7 +84,7 @@ zad1_sz <- function(dane)
 
 zad1_roz <-function(dane)
 {
-  szereg_roz = hist(dane, breaks = seq(min(dane), max(dane), length.out = 8))
+  szereg_roz = hist(dane, breaks = seq(min(dane), max(dane), length.out = round(sqrt(length(dane)),0)+1))
   
   print("----sr arytmetyczna----")
   sr_arytmetyczna = sum(szereg_roz$counts * szereg_roz$mids) / sum(szereg_roz$counts)
@@ -123,11 +123,11 @@ zad1_roz <-function(dane)
   
   
   print("----Wariancja obciazona-----")
-  wariancja = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts) / sum(szereg_roz$counts)
+  wariancja_obciazona = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts) / sum(szereg_roz$counts)
   print(wariancja_obciazona)
   
   print("----Wariancja nieobciazona-----")
-  wariancja = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts) / sum(szereg_roz$counts)
+  wariancja_nieobciazona = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts) / sum(szereg_roz$counts)
   print(wariancja_nieobciazona)
   
   print("----Odchylenie standardowe obciazone-----")
@@ -143,18 +143,19 @@ zad1_roz <-function(dane)
   
 
   print("----Odchylenie przecietne-----")
-  odchylenie_przecietne = (sum(szereg_roz$mids - sr_arytmetyczna)) / sum(szereg_roz$counts)
+  odchylenie_przecietne = (sum(abs(szereg_roz$mids - sr_arytmetyczna))) / sum(szereg_roz$counts)
   print(odchylenie_przecietne)
   
   print("----Odchylenie przecietne od mediany-----")
-  
+  odchylenie_przecietne_od_mediany = sum(abs(szereg_roz$mids - mediana) * szereg_roz$counts) / sum(szereg_roz$counts)  
+  print(odchylenie_przecietne_od_mediany)
   
   print("----Odchylenie cwiartkowe-----")
   odchylenie_cwiartkowe = (kwartyl_3 - kwartyl_1)/2
   print(odchylenie_cwiartkowe)
   
   print("----Wspolczynnik zmiennosci-----")
-  wspolczynnik_zmiennosci = (odchylenie_standard/sr_arytmetyczna)
+  wspolczynnik_zmiennosci = (odchylenie_standard_obciazone/sr_arytmetyczna)
   print(wspolczynnik_zmiennosci)
   
   print("----Pozycyjny wspolczynnik zmiennosci-----")
@@ -162,11 +163,11 @@ zad1_roz <-function(dane)
   print(poz_wspolczynnik_zmiennosci)
   
   print("----Skosnosc-----")
-  skosnosc = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 3) * szereg_roz$counts) / sum(szereg_roz$counts))/(odchylenie_standard ^ 3) 
+  skosnosc = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 3) * szereg_roz$counts) / sum(szereg_roz$counts))/(odchylenie_standard_obciazone ^ 3) 
   print(skosnosc)
   
   print("----Kurtoza-----")
-  kurtoza = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 4) * szereg_roz$counts) / sum(szereg_roz$counts))/(odchylenie_standard ^ 4)
+  kurtoza = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 4) * szereg_roz$counts) / sum(szereg_roz$counts))/(odchylenie_standard_obciazone ^ 4)
   print(kurtoza)
   
   print("----Eksces-----")
@@ -195,4 +196,68 @@ getmode <- function(v)
 {
   uniqv <- unique(v)
   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+#????????????DO REDAKCJI KOD ALE DZIALA SMIGA ELEGANCKO PRYMA SORT
+zad2 <-function(dane)
+{
+  wektor = sort(dane) # sortowanie danych
+  n = length(wektor) # obliczanie, ile element?w
+  
+  # przyjmowanie odpowiedniego k, w zale?no?ci od liczby element?w, brane z tablicy
+  if(length(wektor) == 47) { k = 0.1283 }
+  else { k = 0.1245 }
+  
+  p = pnorm((wektor - mean(wektor))/sd(wektor))
+  # pnorm - The Normal Distribution ? rozk?ad normalny
+  # mean - Arithmetic Mean ? ?rednia arytmetyczna
+  # sd - Standard Deviatiohgn ? odchylenie standardowe 
+  print(p)
+  # seq - Sequence Generation
+  
+  Dplus = max(seq(1:n)/n - p)
+  print(Dplus)
+  Dminus = max(p - (seq(1:n) - 1)/n)
+  print(Dminus)
+  d = max(Dplus, Dminus)
+  print(d)
+  
+  if(d < k) 
+  { cat("Zawartosc cukru w procentach w dostawie burakow cukrowych ma rozklad normalny.\n") } 
+  else 
+  { cat("Zawartosc cukru w procentach w dostawie burakow cukrowych nie ma rozkladu normalnego.\n") }
+}
+
+zad3 <-function(wektor, istotnosc)
+{
+  #hipoteza alternatywna bedzie przecietna != 42
+  #hipoteza zerowa bedzie zawsze przecietna = 42
+  #z zadania 2. wiadomo, ze cecha ma rozklad normalny, skorzystamy ze statystyki t
+  
+  cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", length(wektor), "\n")
+  
+  #obliczenie wartosci statystyki t
+  t = ((mean(wektor) - length(wektor))*(sqrt(length(wektor) - 1)))/(sd(wektor))
+  
+  #sd odchylenie standardowe
+  #ilosc stopni swobody minus jeden
+  
+  #qt - funkcja podajaca kwantyl dla rozkladu tStudenta
+  
+  
+  cat("Hipoteza alternatywna: przecietna != ", length(wektor),"\n")
+  cat("Wartosc statystyki:",t)
+  kwantylT = qt(1-istotnosc/2, df=length(wektor) - 1)    #wyznaczenie granic obszaru krytycznego
+  cat("\nPrzedzialy krytyczne: ( -oo, ",-(kwantylT),") u  (", kwantylT,",oo)\n")
+  if( -kwantylT < t & t < kwantylT)                 #sprawdzenie czy warto?? wyliczona mie?ci si? w przedziale nie krytycznym
+  {
+    cat("Brak podstaw do odrzucenia hipotezy zerowej.\n")
+  }
+  else
+  {
+    cat("Odrzucamy hipoteze zerowa na rzecz hipotezy alternatywnej.\n")
+  }
+  
+  #wynik <- c(t,kwantylT)
+  #return(wynik)
 }
