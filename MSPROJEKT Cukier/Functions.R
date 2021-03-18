@@ -18,7 +18,7 @@ zad1_sz <- function(dane)
   print(sr_geo)
   
   print("----Moda-----")
-  print(getmode(dane))#???????????????????????????????????????????????
+  print(getmode(dane))
   
   print("----Kwartyl 1-----")
   kwartyl_1 = quantile(szereg_szcz, 0.25)
@@ -32,24 +32,26 @@ zad1_sz <- function(dane)
   mediana = median(szereg_szcz)
   print(mediana)
   
-  print("----Odchylenie standardowe-----")
-  odchylenie = sd(szereg_szcz)
-  print(odchylenie)
+  print("----Wariancja nieobciazona-----")
+  wariancja_nieobciazona = sum((szereg_szcz-sr_arytm) ^ 2) / sum(length(dane))
+  print(wariancja_nieobciazona)
   
-  print("----Wariancja-----")
-  wariancja = var(szereg_szcz)
-  print(wariancja)
+  print("----Wariancja obciazona-----")
+  wariancja_obciazona = var(szereg_szcz)
+  print(wariancja_obciazona)
   
-  #print("----Odchylenie standardowe z gwiazdka-----")
-  #odchylenie = sd(szereg_szcz)
-  #print(odchylenie)
+  print("----Odchylenie standardowe nieobciazone-----")
+  odchylenie_standard_nieobciazone = sqrt(wariancja_nieobciazona)
+  print(odchylenie_standard_nieobciazone)
   
-  #print("----Wariancja z gwiazdka-----")
-  #wariancja = var(szereg_szcz)
-  #print(wariancja)
+  
+  print("----Odchylenie standardowe obciazone-----")
+  odchylenie_standard_obciazone = sd(szereg_szcz)
+  print(odchylenie_standard_obciazone)
   
   print("----Odchylenie przecietne-----")
-  #########################################
+  odchylenie_przecietne = sum(szereg_szcz - sr_arytm)/ sum(length(dane))
+  print(odchylenie_przecietne)
   
   print("----Odchylenie przecietne od miediany-----")
   odchyl_przecietne_od_med = sum(abs(szereg_szcz - mediana)) / length(szereg_szcz)
@@ -60,21 +62,19 @@ zad1_sz <- function(dane)
   print(odchyl_cwiartkowe)#????????????????????????????????????????????
   
   print("----Wspolczynnik zmiennosci-----")
-  wspolczynnik_zmien = odchylenie / sr_arytm * 100
+  wspolczynnik_zmien = odchylenie_standard_obciazone / sr_arytm 
   print(wspolczynnik_zmien)
   
-  #print("----Wspolczynnik asymetrii-----")
-  #wspolczynnik_asymetrii =  (sum((szereg_szcz - sr_arytm) ^ 3) / length(szereg_szcz)) / (odchylenie ^ 3)
-  #print(wspolczynnik_asymetrii)
   print("----Pozycyjny wspolczynnik zmiennosci-----")
-  #?????????????????
+  pozycyjny_wspolczynnik_zmien = (kwartyl_3 - kwartyl_1)/(kwartyl_3 + kwartyl_1)
+  print(pozycyjny_wspolczynnik_zmien)
   
-  print("----Wspolczynnik skosnosci-----")
-  wspolczynnik_skosnosci = 3*(sr_arytm - mediana) / odchylenie
-  print(wspolczynnik_skosnosci)
+  print("----Skosnosc-----")
+  skosnosc = (sum((szereg_szcz - sr_arytm) ^ 3) / length(szereg_szcz))/(odchylenie_standard_obciazone ^ 3)
+  print(skosnosc) 
   
   print("----Kurtoza-----")
-  kurtoza = (sum((szereg_szcz - sr_arytm) ^ 4) / length(szereg_szcz)) / (odchylenie ^ 4)
+  kurtoza = (sum((szereg_szcz - sr_arytm) ^ 4) / length(szereg_szcz)) / (odchylenie_standard_obciazone ^ 4)
   print(kurtoza)
   
   print("----Eksces-----")
@@ -114,39 +114,65 @@ zad1_roz <-function(dane)
   ceiling(q3)
   kwartyl_1 = kwartyl(szereg_roz,1,length(dane), q1)
   
-  print("----Mediana----")
-  mediana = kwartyl(szereg_roz,2,length(dane), q2)
-  
   print("----Kwartyl_3----")
   kwartyl_3 = kwartyl(szereg_roz,3,length(dane), q3)
   
-  print("----Odchylenie cwiartkowe-----")
-  odchylenie_cwiartkowe = (kwartyl_3 - kwartyl_1)/2
-  print(odchylenie_cwiartkowe)
+  print("----Mediana----")
+  mediana = kwartyl(szereg_roz,2,length(dane), q2)
   
-  print("----Wariancja-----")
+  
+  
+  print("----Wariancja obciazona-----")
   wariancja = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts) / sum(szereg_roz$counts)
-  print(wariancja)
+  print(wariancja_obciazona)
   
-  print("----Odchylenie standardowe-----")
-  odchylenie_standard = sqrt(wariancja)
-  print(odchylenie_standard)
+  print("----Wariancja nieobciazona-----")
+  wariancja = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts) / sum(szereg_roz$counts)
+  print(wariancja_nieobciazona)
   
+  print("----Odchylenie standardowe obciazone-----")
+  odchylenie_standard_obciazone = sqrt(wariancja_obciazona)
+  print(odchylenie_standard_obciazone)
+  
+  print("----Odchylenie standardowe nieobciazone-----")
+  odchylenie_standard_nieobciazone = sqrt(wariancja_nieobciazona)
+  print(odchylenie_standard_nieobciazone) #??????????
+  
+   
+  #???????????????????
+  
+
   print("----Odchylenie przecietne-----")
   odchylenie_przecietne = (sum(szereg_roz$mids - sr_arytmetyczna)) / sum(szereg_roz$counts)
   print(odchylenie_przecietne)
   
   print("----Odchylenie przecietne od mediany-----")
   
+  
+  print("----Odchylenie cwiartkowe-----")
+  odchylenie_cwiartkowe = (kwartyl_3 - kwartyl_1)/2
+  print(odchylenie_cwiartkowe)
+  
+  print("----Wspolczynnik zmiennosci-----")
+  wspolczynnik_zmiennosci = (odchylenie_standard/sr_arytmetyczna)
+  print(wspolczynnik_zmiennosci)
+  
   print("----Pozycyjny wspolczynnik zmiennosci-----")
-  poz_wspolczynnik_zmiennosci = (odchylenie_standard/sr_arytmetyczna) *100
+  poz_wspolczynnik_zmiennosci = (odchylenie_cwiartkowe/mediana)
   print(poz_wspolczynnik_zmiennosci)
   
+  print("----Skosnosc-----")
+  skosnosc = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 3) * szereg_roz$counts) / sum(szereg_roz$counts))/(odchylenie_standard ^ 3) 
+  print(skosnosc)
   
-
+  print("----Kurtoza-----")
+  kurtoza = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 4) * szereg_roz$counts) / sum(szereg_roz$counts))/(odchylenie_standard ^ 4)
+  print(kurtoza)
   
- 
- 
+  print("----Eksces-----")
+  eksces = kurtoza - 3
+  print(eksces)
+  
   
 }
 
