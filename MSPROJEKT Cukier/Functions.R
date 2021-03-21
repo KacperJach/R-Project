@@ -10,7 +10,7 @@ zad1_sz <- function(dane)
   print(sr_arytm)
   
   print("----Sr harmoniczna-----")
-  sr_harm = 1/mean(1/szereg_szcz)
+  sr_harm = length(szereg_szcz)/sum(1/szereg_szcz)
   print(sr_harm)
   
   print("----Sr geometryczna-----")
@@ -198,34 +198,22 @@ getmode <- function(v)
   uniqv[which.max(tabulate(match(v, uniqv)))]
 }
 
-#????????????DO REDAKCJI KOD ALE DZIALA SMIGA ELEGANCKO PRYMA SORT
-zad2 <-function(dane)
+zad2 <-function(dane, wspolczynnik_ufnosci)
 {
-  wektor = sort(dane) # sortowanie danych
-  n = length(wektor) # obliczanie, ile element?w
+  wektor = sort(dane) 
   
-  # przyjmowanie odpowiedniego k, w zale?no?ci od liczby element?w, brane z tablicy
-  if(length(wektor) == 47) { k = 0.1283 }
-  else { k = 0.1245 }
   
-  p = pnorm((wektor - mean(wektor))/sd(wektor))
-  # pnorm - The Normal Distribution ? rozk?ad normalny
-  # mean - Arithmetic Mean ? ?rednia arytmetyczna
-  # sd - Standard Deviatiohgn ? odchylenie standardowe 
-  print(p)
-  # seq - Sequence Generation
+  l = ks.test(wektor,"pnorm", mean(wektor), sd(wektor))
+  print(l)
   
-  Dplus = max(seq(1:n)/n - p)
-  print(Dplus)
-  Dminus = max(p - (seq(1:n) - 1)/n)
-  print(Dminus)
-  d = max(Dplus, Dminus)
-  print(d)
-  
-  if(d < k) 
-  { cat("Zawartosc cukru w procentach w dostawie burakow cukrowych ma rozklad normalny.\n") } 
+  if(l$p > 1-wspolczynnik_ufnosci) 
+  { 
+    print("Zawartosc cukru w procentach w dostawie burakow cukrowych ma rozklad normalny.\n") 
+  } 
   else 
-  { cat("Zawartosc cukru w procentach w dostawie burakow cukrowych nie ma rozkladu normalnego.\n") }
+  { 
+    print("Zawartosc cukru w procentach w dostawie burakow cukrowych nie ma rozkladu normalnego.\n") 
+  }
 }
 
 zad3 <-function(wektor, istotnosc)
@@ -234,28 +222,28 @@ zad3 <-function(wektor, istotnosc)
   #hipoteza zerowa bedzie zawsze przecietna = 42
   #z zadania 2. wiadomo, ze cecha ma rozklad normalny, skorzystamy ze statystyki t
   
-  cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", length(wektor), "\n")
+  print("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", length(wektor), "\n")
   
   #obliczenie wartosci statystyki t
   t = ((mean(wektor) - length(wektor))*(sqrt(length(wektor) - 1)))/(sd(wektor))
   
   #sd odchylenie standardowe
-  #ilosc stopni swobody minus jeden
+  #ilosc stopni swobody minus jeden z racji rozkladu normalnego
   
   #qt - funkcja podajaca kwantyl dla rozkladu tStudenta
   
   
-  cat("Hipoteza alternatywna: przecietna != ", length(wektor),"\n")
-  cat("Wartosc statystyki:",t)
+  print("Hipoteza alternatywna: przecietna != ", length(wektor),"\n")
+  print("Wartosc statystyki:",t)
   kwantylT = qt(1-istotnosc/2, df=length(wektor) - 1)    #wyznaczenie granic obszaru krytycznego
-  cat("\nPrzedzialy krytyczne: ( -oo, ",-(kwantylT),") u  (", kwantylT,",oo)\n")
+  print("\nPrzedzialy krytyczne: ( -oo, ",-(kwantylT),") u  (", kwantylT,",oo)\n")
   if( -kwantylT < t & t < kwantylT)                 #sprawdzenie czy warto?? wyliczona mie?ci si? w przedziale nie krytycznym
   {
-    cat("Brak podstaw do odrzucenia hipotezy zerowej.\n")
+    print("Brak podstaw do odrzucenia hipotezy zerowej.\n")
   }
   else
   {
-    cat("Odrzucamy hipoteze zerowa na rzecz hipotezy alternatywnej.\n")
+    print("Odrzucamy hipoteze zerowa na rzecz hipotezy alternatywnej.\n")
   }
   
   #wynik <- c(t,kwantylT)
