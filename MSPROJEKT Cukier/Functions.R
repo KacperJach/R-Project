@@ -192,10 +192,10 @@ kwartyl <- function(szereg_roz, nr_kwartylu, dlugosc_danych, q)
   print(kw)
 }
 
-getmode <- function(v) 
+getmode <- function(wektor) 
 {
-  uniqv <- unique(v)
-  uniqv[which.max(tabulate(match(v, uniqv)))]
+  uniqv <- unique(wektor)
+  uniqv[which.max(tabulate(wektor))]
 }
 
 zad2 <-function(dane, wspolczynnik_ufnosci)
@@ -273,5 +273,91 @@ zad4 <- function(dane, odchylenie_standardowe, alfa)
   else
   {
     cat("Na poziomie istotnosci ", alfa, "mozemy odrzucic hipotezy,ze odchylenie standardowe zawartosci cukru w dostawach burakow cukrowych w wojewodztwie wielkopolskim jest rowne 2% ")
+  }
+}
+
+test_fs <- function(wektor1,wektor2,alfa)
+{
+  cat("Test fishera-snedecora\n")
+  cat("Hipoteza zerowa: wariancje sa sobie rowne\n Hipoteza alternatywna: wariancja z marketu pierwszego jest wieksza od wariancji z marketu drugigo\n")
+  if(var(wektor1)>var(wektor2))
+  {
+    statystyka_f=var(wektor1)/var(wektor2)
+    kwantyl_f=qf(1-alfa,length(wektor1)-1,length(wektor2)-1)
+  }
+  else 
+  {
+    statystyka_f=var(wektor2)/var(wektor1)
+    kwantyl_f=qf(1-alfa,length(wektor2)-1,length(wektor1)-1)
+    
+    
+  }
+
+  cat("Wartosc statystyki fishera:",statystyka_f)
+  cat("\nPrzedzial krytyczny: (", kwantyl_f,",oo)\n")
+  if(statystyka_f<kwantyl_f)
+  {
+    cat("Nie ma podstaw do odrzucenia hipotezy zerowej, przyjmujemy ze wariancje sa w przyblizeniu rowne\n")
+    return (1)
+  }
+  else
+  {
+    cat("Sa podstawy do odrzucenia hipotezy zerowej, przyjmujemy ze wariancje nie sa w przyblizeniu rowne\n")
+    return (0)
+  }
+}
+
+zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
+{
+  wektor_szcz_1= sort(wektor1)
+  wektor_szcz_2= sort(wektor2)
+  kwantyl=qt(1-alfa,df=length(wektor_szcz_1)+length(wektor_szcz_2)-2)
+  cat("Statystyka t studenta\n")
+  test_t_studenta=t.test(wektor1,wektor2)
+  print("--------------------")
+  print(test_t_studenta)
+ 
+  
+  if(kwantyl<test_t_studenta$statistic)
+  {
+    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipoteze ze zawartosc cukru w województwie lubuskim jest mniejsza ni¿ w województwie wielkopolskim \n")
+  }
+  else
+  {
+    cat("Na poziomie istotnosci ",alfa," mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubelskim jest mniejsza ni¿ w województwie wielkopolskim\n")
+  
+  }
+}
+
+zad_5_test_t_studenta_c_c <- function(wektor1,wektor2,alfa)
+{
+  cat("Statystyka Cochrana_Coxa\n")
+  cat("hipoteza zerowa: srednie sa rowne\nHipoteza alternatywna: srednia wartosc miesiecznych wydatkow w pierwszym markecie jest wieksza od sredniej wartosci miesiecznych wydatkow w drugim markecie\n")
+  statystyka=(abs(mean(wektor1)-mean(wektor2)))/(sqrt(var(wektor1)/(length(wektor1)-1)+var(wektor2)/(length(wektor2)-1)))
+  kwantyl=((var(wektor1)/length(wektor1))*qt(1-alfa,length(wektor1))+(var(wektor2)/length(wektor2))*qt(1-alfa,length(wektor2)))/((var(wektor1)/length(wektor1))+(var(wektor2)/length(wektor2))) 
+  cat("Wartosc statystyki Cochrana coxa:",statystyka)
+  cat("\nWartosc graniczna przedzialu krytycznego(najwyzsza):",kwantyl, "\n")
+  
+  if(kwantyl<statystyka)
+  {
+    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipoteze ze zawartosc cukru w województwie lubuskim jest mniejsza ni¿ w województwie wielkopolskim \n")
+  }
+  else
+  {
+    cat("Na poziomie istotnosci ",alfa,"mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubelskim jest mniejsza ni¿ w województwie wielkopolskim\n")
+  }
+}
+
+zad5 <- function(wektor1,wektor2,alfa)
+{
+  if(test_fs(wektor1,wektor2,alfa)==1) #Je?eli warto?? statystki nale?y do obszaru krytycznego to uznajemy ?e wariancje r??ni? si? w spos?b znacz?cy 
+    #i w dalszej cz??ci zadania u?ywamy statystyki cochrana-coxa, je?eli statystyka nie nale?y do obszaru krytycznego
+    #to u?ywamy statystyki t-studenta. 
+  {
+    zad_5_test_t_studenta(wektor1,wektor2,alfa)
+  }
+  else
+  {
+    zad_5_test_t_studenta_c_c(wektor1,wektor2,alfa)
   }
 }

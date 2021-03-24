@@ -15,3 +15,7 @@ zad2(wielkopolskie$V1, 0.95)
 zad3(lubuskie$V1, 0.05)
 
 zad4(wielkopolskie$V1, 2, 0.05)
+test_fs(lubuskie$V1,wielkopolskie$V1,0.05)
+
+zad_5_test_t_studenta(lubuskie$V1,wielkopolskie$V1,0.05)
+zad_5_test_t_studenta_c_c(lubuskie$V1,wielkopolskie$V1,0.05)
