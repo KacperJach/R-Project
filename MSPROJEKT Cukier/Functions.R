@@ -222,7 +222,7 @@ zad3 <-function(wektor, istotnosc)
   #hipoteza zerowa bedzie zawsze przecietna = 42
   #z zadania 2. wiadomo, ze cecha ma rozklad normalny, skorzystamy ze statystyki t
   
-  print("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", length(wektor), "\n")
+  cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", length(wektor), "\n")
   
   #obliczenie wartosci statystyki t
   t = ((mean(wektor) - length(wektor))*(sqrt(length(wektor) - 1)))/(sd(wektor))
@@ -233,19 +233,45 @@ zad3 <-function(wektor, istotnosc)
   #qt - funkcja podajaca kwantyl dla rozkladu tStudenta
   
   
-  print("Hipoteza alternatywna: przecietna != ", length(wektor),"\n")
-  print("Wartosc statystyki:",t)
+  cat("Hipoteza alternatywna: przecietna != ", length(wektor),"\n")
+  cat("Wartosc statystyki:",t)
   kwantylT = qt(1-istotnosc/2, df=length(wektor) - 1)    #wyznaczenie granic obszaru krytycznego
-  print("\nPrzedzialy krytyczne: ( -oo, ",-(kwantylT),") u  (", kwantylT,",oo)\n")
+  cat("\nPrzedzialy krytyczne: ( -oo, ",-(kwantylT),") u  (", kwantylT,",oo)\n")
   if( -kwantylT < t & t < kwantylT)                 #sprawdzenie czy warto?? wyliczona mie?ci si? w przedziale nie krytycznym
   {
-    print("Brak podstaw do odrzucenia hipotezy zerowej.\n")
+    print("Brak podstaw do odrzucenia hipotezy zerowej.")
   }
   else
   {
-    print("Odrzucamy hipoteze zerowa na rzecz hipotezy alternatywnej.\n")
+    print("Odrzucamy hipoteze zerowa na rzecz hipotezy alternatywnej.")
   }
   
   #wynik <- c(t,kwantylT)
   #return(wynik)
+}
+
+zad4 <- function(dane, odchylenie_standardowe, alfa)
+{
+  cat("Wartosc istotnosci testu: ", alfa, "\nWartosc odchylenia standardowego: ",odchylenie_standardowe,"\n")
+  
+  
+  stat_chi_kwadrat = (var(dane)*length(dane))/(odchylenie_standardowe^2) 
+  
+  
+  cat("Hipoteza alternatywna: odchylenie standardowe nie jest rowne ", odchylenie_standardowe,"\n")
+  
+  kwantyl_p = qchisq(1-alfa/2, length(dane)-1)
+  kwantyl_l = qchisq(alfa/2, length(dane)-1)
+  
+  cat("Wartosc statystyki chi kwadrat:", stat_chi_kwadrat)
+  cat("\nPrzedzialy krytyczne: ( -inf, ",-(kwantyl_l),") u  (",kwantyl_p,",+inf)\n")
+  
+  if(kwantyl_l < stat_chi_kwadrat && kwantyl_p > stat_chi_kwadrat)
+  {
+    cat("Na poziomie istotnosci ", alfa, "nie mozemy odrzucic hipotezy,ze odchylenie standardowe zawartosci cukru w dostawach burakow cukrowych w wojewodztwie wielkopolskim jest rowne 2% ")
+  }
+  else
+  {
+    cat("Na poziomie istotnosci ", alfa, "mozemy odrzucic hipotezy,ze odchylenie standardowe zawartosci cukru w dostawach burakow cukrowych w wojewodztwie wielkopolskim jest rowne 2% ")
+  }
 }
