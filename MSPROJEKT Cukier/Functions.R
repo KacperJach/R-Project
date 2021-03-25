@@ -289,8 +289,6 @@ test_fs <- function(wektor1,wektor2,alfa)
   {
     statystyka_f=var(wektor2)/var(wektor1)
     kwantyl_f=qf(1-alfa,length(wektor2)-1,length(wektor1)-1)
-    
-    
   }
 
   cat("Wartosc statystyki fishera:",statystyka_f)
@@ -312,6 +310,7 @@ zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
   wektor_szcz_1= sort(wektor1)
   wektor_szcz_2= sort(wektor2)
   kwantyl=qt(1-alfa,df=length(wektor_szcz_1)+length(wektor_szcz_2)-2)
+  
   cat("Statystyka t studenta\n")
   test_t_studenta=t.test(wektor1,wektor2)
   print("--------------------")
@@ -320,11 +319,11 @@ zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
   
   if(kwantyl<test_t_studenta$statistic)
   {
-    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipoteze ze zawartosc cukru w województwie lubuskim jest mniejsza ni¿ w województwie wielkopolskim \n")
+    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipoteze ze zawartosc cukru w wojew?dztwie lubuskim jest mniejsza ni? w wojew?dztwie wielkopolskim \n")
   }
   else
   {
-    cat("Na poziomie istotnosci ",alfa," mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubelskim jest mniejsza ni¿ w województwie wielkopolskim\n")
+    cat("Na poziomie istotnosci ",alfa," mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubelskim jest mniejsza ni? w wojew?dztwie wielkopolskim\n")
   
   }
 }
@@ -333,18 +332,18 @@ zad_5_test_t_studenta_c_c <- function(wektor1,wektor2,alfa)
 {
   cat("Statystyka Cochrana_Coxa\n")
   cat("hipoteza zerowa: srednie sa rowne\nHipoteza alternatywna: srednia wartosc miesiecznych wydatkow w pierwszym markecie jest wieksza od sredniej wartosci miesiecznych wydatkow w drugim markecie\n")
-  statystyka=(abs(mean(wektor1)-mean(wektor2)))/(sqrt(var(wektor1)/(length(wektor1)-1)+var(wektor2)/(length(wektor2)-1)))
-  kwantyl=((var(wektor1)/length(wektor1))*qt(1-alfa,length(wektor1))+(var(wektor2)/length(wektor2))*qt(1-alfa,length(wektor2)))/((var(wektor1)/length(wektor1))+(var(wektor2)/length(wektor2))) 
+  statystyka=(abs(mean(wektor1)-mean(wektor2)))/(sqrt(var(wektor1)/(length(wektor1))+var(wektor2)/(length(wektor2))))
+  kwantyl=((var(wektor1)/length(wektor1))*qt(1-alfa,length(wektor1)-1)+(var(wektor2)/length(wektor2))*qt(1-alfa,length(wektor2)-1))/((var(wektor1)/length(wektor1))+(var(wektor2)/length(wektor2))) 
   cat("Wartosc statystyki Cochrana coxa:",statystyka)
   cat("\nWartosc graniczna przedzialu krytycznego(najwyzsza):",kwantyl, "\n")
   
   if(kwantyl<statystyka)
   {
-    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipoteze ze zawartosc cukru w województwie lubuskim jest mniejsza ni¿ w województwie wielkopolskim \n")
+    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipoteze ze zawartosc cukru w wojew?dztwie lubuskim jest mniejsza ni? w wojew?dztwie wielkopolskim \n")
   }
   else
   {
-    cat("Na poziomie istotnosci ",alfa,"mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubelskim jest mniejsza ni¿ w województwie wielkopolskim\n")
+    cat("Na poziomie istotnosci ",alfa,"mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubelskim jest mniejsza ni? w wojew?dztwie wielkopolskim\n")
   }
 }
 
