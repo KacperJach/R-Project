@@ -2,9 +2,7 @@
 zad1_sz <- function(dane)
 {
   szereg_szcz = sort(dane)
-  print(szereg_szcz)
  
-  
   print("----Sr arytmetyczna-----")
   sr_arytm = mean(szereg_szcz)
   print(sr_arytm)
@@ -59,7 +57,7 @@ zad1_sz <- function(dane)
   
   print("----Odchylenie cwiartkowe-----")
   odchyl_cwiartkowe = (kwartyl_3 - kwartyl_1)/2
-  print(odchyl_cwiartkowe)#????????????????????????????????????????????
+  print(odchyl_cwiartkowe)
   
   print("----Wspolczynnik zmiennosci-----")
   wspolczynnik_zmien = odchylenie_standard_obciazone / sr_arytm 
@@ -120,8 +118,6 @@ zad1_roz <-function(dane)
   print("----Mediana----")
   mediana = kwartyl(szereg_roz,2,length(dane), q2)
   
-  
-  
   print("----Wariancja obciazona-----")
   wariancja_obciazona = sum((szereg_roz$mids-sr_arytmetyczna) ^ 2)/ (sum(szereg_roz$counts))
   print(wariancja_obciazona)
@@ -136,12 +132,8 @@ zad1_roz <-function(dane)
   
   print("----Odchylenie standardowe nieobciazone-----")
   odchylenie_standard_nieobciazone = sqrt(wariancja_nieobciazona)
-  print(odchylenie_standard_nieobciazone) #??????????
+  print(odchylenie_standard_nieobciazone)
   
-   
-  #???????????????????
-  
-
   print("----Odchylenie przecietne-----")
   odchylenie_przecietne = (sum(abs(szereg_roz$mids - sr_arytmetyczna))) / sum(szereg_roz$counts)
   print(odchylenie_przecietne)
@@ -174,7 +166,6 @@ zad1_roz <-function(dane)
   eksces = kurtoza - 3
   print(eksces)
   
-  
 }
 
 indeks_przedzialu <-function(counts, m)
@@ -184,6 +175,7 @@ indeks_przedzialu <-function(counts, m)
       return(i)
   }
 }
+
 kwartyl <- function(szereg_roz, nr_kwartylu, dlugosc_danych, q)
 {
   indeks = indeks_przedzialu(szereg_roz$counts, q)
@@ -218,26 +210,17 @@ zad2 <-function(dane, wspolczynnik_ufnosci)
 
 zad3 <-function(wektor, istotnosc)
 {
-  #hipoteza alternatywna bedzie przecietna != 18
-  #hipoteza zerowa bedzie zawsze przecietna = 18
-  #z zadania 2. wiadomo, ze cecha ma rozklad normalny, skorzystamy ze statystyki t
-  
+ 
   cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", 18, "\n")
-  s
-  #obliczenie wartosci statystyki t
   t = ((mean(wektor) - 18)*(sqrt(length(wektor) - 1)))/(sd(wektor))
-  
-  #sd odchylenie standardowe
-  #ilosc stopni swobody minus jeden z racji rozkladu normalnego
-  
-  #qt - funkcja podajaca kwantyl dla rozkladu tStudenta
-  
   
   cat("Hipoteza alternatywna: przecietna != ", 18,"\n")
   cat("Wartosc statystyki:",t)
-  kwantylT = qt(1-istotnosc/2, df=length(wektor) - 1)    #wyznaczenie granic obszaru krytycznego
+  
+  kwantylT = qt(1-istotnosc/2, df=length(wektor) - 1)  
+  
   cat("\nPrzedzialy krytyczne: ( -oo, ",-(kwantylT),") u  (", kwantylT,",oo)\n")
-  if( -kwantylT < t & t < kwantylT)                 #sprawdzenie czy warto?? wyliczona mie?ci si? w przedziale nie krytycznym
+  if( -kwantylT < t & t < kwantylT)                 
   {
     print("Brak podstaw do odrzucenia hipotezy zerowej.")
   }
@@ -245,15 +228,11 @@ zad3 <-function(wektor, istotnosc)
   {
     print("Odrzucamy hipoteze zerowa na rzecz hipotezy alternatywnej.")
   }
-  
-  #wynik <- c(t,kwantylT)
-  #return(wynik)
 }
 
 zad4 <- function(dane, odchylenie_standardowe, alfa)
 {
   cat("Wartosc istotnosci testu: ", alfa, "\nWartosc odchylenia standardowego: ",odchylenie_standardowe,"\n")
-  
   
   stat_chi_kwadrat = (var(dane)*(length(dane)-1))/(odchylenie_standardowe^2) 
   
@@ -280,7 +259,7 @@ test_fs <- function(wektor1,wektor2,alfa)
 {
   cat("\n")
   cat("Test fishera-snedecora\n")
-  cat("Hipoteza zerowa: wariancje sa sobie rowne\n Hipoteza alternatywna: wariancja z wojewodztwa lubuskiego jest wieksza od wariancji z wojewodztwa wielkopolskiego\n")
+  cat("Hipoteza zerowa: wariancje sa sobie rowne\nHipoteza alternatywna: wariancja z wojewodztwa lubuskiego jest wieksza od wariancji z wojewodztwa wielkopolskiego\n")
   if(var(wektor1)>var(wektor2))
   {
     statystyka_f=var(wektor1)/var(wektor2)
@@ -311,6 +290,7 @@ zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
   wektor_szcz_1= sort(wektor1)
   wektor_szcz_2= sort(wektor2)
   kwantyl=qt(1-alfa,df=length(wektor_szcz_1)+length(wektor_szcz_2)-2)
+  cat("Hipoteza zerowa: srednie sa rowne\nHipoteza alternatywna: Zawartosc cukru w wojewodztwie lubuskim jest mniejsza niz w wojewodztwie wielkopolskim\n")
   
   cat("Statystyka t studenta\n")
   test_t_studenta=t.test(wektor1,wektor2)
@@ -320,11 +300,11 @@ zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
   
   if(kwantyl<test_t_studenta$statistic)
   {
-    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipoteze ze zawartosc cukru w wojew?dztwie lubuskim jest mniejsza ni? w wojew?dztwie wielkopolskim \n")
+    cat("Na poziomie istotnosci ",alfa," mozna przyjac hipoteze zerowa \n")
   }
   else
   {
-    cat("Na poziomie istotnosci ",alfa," mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubelskim jest mniejsza ni? w wojew?dztwie wielkopolskim\n")
+    cat("Na poziomie istotnosci ",alfa," mozna przyjac hipoteze alternatywna  \n")
   
   }
 }
@@ -332,19 +312,21 @@ zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
 zad_5_test_t_studenta_c_c <- function(wektor1,wektor2,alfa)
 {
   cat("Statystyka Cochrana_Coxa\n")
-  cat("hipoteza zerowa: srednie sa rowne\nHipoteza alternatywna: srednia wartosc miesiecznych wydatkow w pierwszym markecie jest wieksza od sredniej wartosci miesiecznych wydatkow w drugim markecie\n")
+  cat("Hipoteza zerowa: srednie sa rowne\nHipoteza alternatywna: Zawartość cukru w województwie lubuskim jest mniejsza niz w wojewodztwie wielkopolskim\n")
+  
   statystyka=(abs(mean(wektor1)-mean(wektor2)))/(sqrt(var(wektor1)/(length(wektor1))+var(wektor2)/(length(wektor2))))
   kwantyl=((var(wektor1)/length(wektor1))*qt(1-alfa,length(wektor1)-1)+(var(wektor2)/length(wektor2))*qt(1-alfa,length(wektor2)-1))/((var(wektor1)/length(wektor1))+(var(wektor2)/length(wektor2))) 
+  
   cat("Wartosc statystyki Cochrana coxa:",statystyka)
   cat("\nWartosc graniczna przedzialu krytycznego(najwyzsza):",kwantyl, "\n")
   
   if(kwantyl<statystyka)
   {
-    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipoteze ze zawartosc cukru w wojew?dztwie lubuskim jest mniejsza ni? w wojew?dztwie wielkopolskim \n")
+    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipotezy ze zawartosc cukru w wojew?dztwie lubuskim jest mniejsza niz w wojewodztwie wielkopolskim \n")
   }
   else
   {
-    cat("Na poziomie istotnosci ",alfa,"mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubelskim jest mniejsza ni? w wojew?dztwie wielkopolskim\n")
+    cat("Na poziomie istotnosci ",alfa,"mozna przyjac hipoteze ze zawartosc cukru w wojewodztwie lubuskim jest mniejsza niz w wojewodztwie wielkopolskim\n")
   }
 }
 
