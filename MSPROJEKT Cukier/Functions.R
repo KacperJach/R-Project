@@ -123,7 +123,7 @@ zad1_roz <-function(dane)
   
   
   print("----Wariancja obciazona-----")
-  wariancja_obciazona = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts) / sum(szereg_roz$counts)
+  wariancja_obciazona = sum((szereg_roz$mids-sr_arytmetyczna) ^ 2)/ (sum(szereg_roz$counts))
   print(wariancja_obciazona)
   
   print("----Wariancja nieobciazona-----")
@@ -208,24 +208,24 @@ zad2 <-function(dane, wspolczynnik_ufnosci)
   
   if(l$p > 1-wspolczynnik_ufnosci) 
   { 
-    print("Zawartosc cukru w procentach w dostawie burakow cukrowych ma rozklad normalny.\n") 
+    print("Zawartosc cukru w procentach w dostawie burakow cukrowych ma rozklad normalny.") 
   } 
   else 
   { 
-    print("Zawartosc cukru w procentach w dostawie burakow cukrowych nie ma rozkladu normalnego.\n") 
+    print("Zawartosc cukru w procentach w dostawie burakow cukrowych nie ma rozkladu normalnego.") 
   }
 }
 
 zad3 <-function(wektor, istotnosc)
 {
-  #hipoteza alternatywna bedzie przecietna != 42
-  #hipoteza zerowa bedzie zawsze przecietna = 42
+  #hipoteza alternatywna bedzie przecietna != 18
+  #hipoteza zerowa bedzie zawsze przecietna = 18
   #z zadania 2. wiadomo, ze cecha ma rozklad normalny, skorzystamy ze statystyki t
   
-  cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", length(wektor), "\n")
-  
+  cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", 18, "\n")
+  s
   #obliczenie wartosci statystyki t
-  t = ((mean(wektor) - length(wektor))*(sqrt(length(wektor) - 1)))/(sd(wektor))
+  t = ((mean(wektor) - 18)*(sqrt(length(wektor) - 1)))/(sd(wektor))
   
   #sd odchylenie standardowe
   #ilosc stopni swobody minus jeden z racji rozkladu normalnego
@@ -233,7 +233,7 @@ zad3 <-function(wektor, istotnosc)
   #qt - funkcja podajaca kwantyl dla rozkladu tStudenta
   
   
-  cat("Hipoteza alternatywna: przecietna != ", length(wektor),"\n")
+  cat("Hipoteza alternatywna: przecietna != ", 18,"\n")
   cat("Wartosc statystyki:",t)
   kwantylT = qt(1-istotnosc/2, df=length(wektor) - 1)    #wyznaczenie granic obszaru krytycznego
   cat("\nPrzedzialy krytyczne: ( -oo, ",-(kwantylT),") u  (", kwantylT,",oo)\n")
@@ -255,8 +255,7 @@ zad4 <- function(dane, odchylenie_standardowe, alfa)
   cat("Wartosc istotnosci testu: ", alfa, "\nWartosc odchylenia standardowego: ",odchylenie_standardowe,"\n")
   
   
-  stat_chi_kwadrat = (var(dane)*length(dane))/(odchylenie_standardowe^2) 
-  
+  stat_chi_kwadrat = (var(dane)*(length(dane)-1))/(odchylenie_standardowe^2) 
   
   cat("Hipoteza alternatywna: odchylenie standardowe nie jest rowne ", odchylenie_standardowe,"\n")
   
@@ -268,18 +267,20 @@ zad4 <- function(dane, odchylenie_standardowe, alfa)
   
   if(kwantyl_l < stat_chi_kwadrat && kwantyl_p > stat_chi_kwadrat)
   {
-    cat("Na poziomie istotnosci ", alfa, "nie mozemy odrzucic hipotezy,ze odchylenie standardowe zawartosci cukru w dostawach burakow cukrowych w wojewodztwie wielkopolskim jest rowne 2% ")
+    cat("Na poziomie istotnosci ", alfa, "przyjmujemy hipoteze,ze odchylenie standardowe zawartosci cukru w dostawach burakow cukrowych w wojewodztwie wielkopolskim jest rowne 2% ")
   }
   else
   {
     cat("Na poziomie istotnosci ", alfa, "mozemy odrzucic hipotezy,ze odchylenie standardowe zawartosci cukru w dostawach burakow cukrowych w wojewodztwie wielkopolskim jest rowne 2% ")
   }
+  cat('\n')
 }
 
 test_fs <- function(wektor1,wektor2,alfa)
 {
+  cat("\n")
   cat("Test fishera-snedecora\n")
-  cat("Hipoteza zerowa: wariancje sa sobie rowne\n Hipoteza alternatywna: wariancja z marketu pierwszego jest wieksza od wariancji z marketu drugigo\n")
+  cat("Hipoteza zerowa: wariancje sa sobie rowne\n Hipoteza alternatywna: wariancja z wojewodztwa lubuskiego jest wieksza od wariancji z wojewodztwa wielkopolskiego\n")
   if(var(wektor1)>var(wektor2))
   {
     statystyka_f=var(wektor1)/var(wektor2)
