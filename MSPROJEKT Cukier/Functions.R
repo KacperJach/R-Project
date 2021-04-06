@@ -1,17 +1,16 @@
-#Zadanko1 es
-zad1_sz <- function(dane)
+zad6_sz <- function(dane)
 {
   szereg_szcz = sort(dane)
  
-  print("----Sr arytmetyczna-----")
+  print("----Srednia arytmetyczna-----")
   sr_arytm = mean(szereg_szcz)
   print(sr_arytm)
   
-  print("----Sr harmoniczna-----")
+  print("----Srednia harmoniczna-----")
   sr_harm = length(szereg_szcz)/sum(1/szereg_szcz)
   print(sr_harm)
   
-  print("----Sr geometryczna-----")
+  print("----Srednia geometryczna-----")
   sr_geo = prod(szereg_szcz) ^ (1/(length(szereg_szcz)))
   print(sr_geo)
   
@@ -30,22 +29,21 @@ zad1_sz <- function(dane)
   mediana = median(szereg_szcz)
   print(mediana)
   
-  print("----Wariancja nieobciazona-----")
-  wariancja_nieobciazona = sum((szereg_szcz-sr_arytm) ^ 2) / sum(length(dane))
-  print(wariancja_nieobciazona)
-  
   print("----Wariancja obciazona-----")
-  wariancja_obciazona = var(szereg_szcz)
+  wariancja_obciazona = sum((szereg_szcz-sr_arytm) ^ 2) / sum(length(dane))
   print(wariancja_obciazona)
   
-  print("----Odchylenie standardowe nieobciazone-----")
-  odchylenie_standard_nieobciazone = sqrt(wariancja_nieobciazona)
-  print(odchylenie_standard_nieobciazone)
-  
+  print("----Wariancja nieobciazona-----")
+  wariancja_nieobciazona = var(szereg_szcz)
+  print(wariancja_nieobciazona)
   
   print("----Odchylenie standardowe obciazone-----")
-  odchylenie_standard_obciazone = sd(szereg_szcz)
+  odchylenie_standard_obciazone = sqrt(wariancja_obciazona)
   print(odchylenie_standard_obciazone)
+  
+  print("----Odchylenie standardowe nieobciazone-----")
+  odchylenie_standard_nieobciazone = sd(szereg_szcz)
+  print(odchylenie_standard_nieobciazone)
   
   print("----Odchylenie przecietne-----")
   odchylenie_przecietne = sum(abs(szereg_szcz - sr_arytm))/ length(szereg_szcz)
@@ -60,7 +58,7 @@ zad1_sz <- function(dane)
   print(odchyl_cwiartkowe)
   
   print("----Wspolczynnik zmiennosci-----")
-  wspolczynnik_zmien = odchylenie_standard_obciazone / sr_arytm 
+  wspolczynnik_zmien = odchylenie_standard_nieobciazone / sr_arytm 
   print(wspolczynnik_zmien)
   
   print("----Pozycyjny wspolczynnik zmiennosci-----")
@@ -68,11 +66,11 @@ zad1_sz <- function(dane)
   print(pozycyjny_wspolczynnik_zmien)
   
   print("----Skosnosc-----")
-  skosnosc = (sum((szereg_szcz - sr_arytm) ^ 3) / length(szereg_szcz))/(odchylenie_standard_obciazone ^ 3)
+  skosnosc = (sum((szereg_szcz - sr_arytm) ^ 3) / length(szereg_szcz))/(odchylenie_standard_nieobciazone ^ 3)
   print(skosnosc) 
   
   print("----Kurtoza-----")
-  kurtoza = (sum((szereg_szcz - sr_arytm) ^ 4) / length(szereg_szcz)) / (odchylenie_standard_obciazone ^ 4)
+  kurtoza = (sum((szereg_szcz - sr_arytm) ^ 4) / length(szereg_szcz)) / (odchylenie_standard_nieobciazone ^ 4)
   print(kurtoza)
   
   print("----Eksces-----")
@@ -80,19 +78,19 @@ zad1_sz <- function(dane)
   print(eksces)
 }
 
-zad1_roz <-function(dane)
+zad6_roz <-function(dane)
 {
   szereg_roz = hist(dane, breaks = seq(min(dane), max(dane), length.out = round(sqrt(length(dane)),0)+1))
   
-  print("----sr arytmetyczna----")
+  print("----Srednia arytmetyczna----")
   sr_arytmetyczna = sum(szereg_roz$counts * szereg_roz$mids) / sum(szereg_roz$counts)
   print(sr_arytmetyczna)
   
-  print("----sr harmoniczna----")
+  print("----Srednia harmoniczna----")
   sr_harmoniczna = sum(szereg_roz$counts) / sum(szereg_roz$counts / szereg_roz$mids)
   print(sr_harmoniczna)
   
-  print("----sr geometryczna----")
+  print("----Srednia geometryczna----")
   sr_geometryczna = (prod(szereg_roz$mids ^ szereg_roz$counts)) ^ (1 / sum(szereg_roz$counts))
   print(sr_geometryczna)
   
@@ -119,11 +117,11 @@ zad1_roz <-function(dane)
   mediana = kwartyl(szereg_roz,2,length(dane), q2)
   
   print("----Wariancja obciazona-----")
-  wariancja_obciazona = sum((szereg_roz$mids-sr_arytmetyczna) ^ 2)/ (sum(szereg_roz$counts))
+  wariancja_obciazona = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts)/ (sum(szereg_roz$counts))
   print(wariancja_obciazona)
   
   print("----Wariancja nieobciazona-----")
-  wariancja_nieobciazona = sum(((szereg_roz$mids-sr_arytmetyczna) ^ 2) * szereg_roz$counts) / sum(szereg_roz$counts)
+  wariancja_nieobciazona = sum((szereg_roz$mids-sr_arytmetyczna) ^ 2) / (sum(szereg_roz$counts)-1)
   print(wariancja_nieobciazona)
   
   print("----Odchylenie standardowe obciazone-----")
@@ -147,7 +145,7 @@ zad1_roz <-function(dane)
   print(odchylenie_cwiartkowe)
   
   print("----Wspolczynnik zmiennosci-----")
-  wspolczynnik_zmiennosci = (odchylenie_standard_obciazone/sr_arytmetyczna)
+  wspolczynnik_zmiennosci = (odchylenie_standard_nieobciazone/sr_arytmetyczna)
   print(wspolczynnik_zmiennosci)
   
   print("----Pozycyjny wspolczynnik zmiennosci-----")
@@ -155,11 +153,11 @@ zad1_roz <-function(dane)
   print(poz_wspolczynnik_zmiennosci)
   
   print("----Skosnosc-----")
-  skosnosc = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 3) * szereg_roz$counts) / sum(szereg_roz$counts))/(odchylenie_standard_obciazone ^ 3) 
+  skosnosc = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 3)) / sum(szereg_roz$counts))/(odchylenie_standard_nieobciazone ^ 3) 
   print(skosnosc)
   
   print("----Kurtoza-----")
-  kurtoza = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 4) * szereg_roz$counts) / sum(szereg_roz$counts))/(odchylenie_standard_obciazone ^ 4)
+  kurtoza = (sum(((szereg_roz$mids - sr_arytmetyczna) ^ 4)) / sum(szereg_roz$counts))/(odchylenie_standard_nieobciazone ^ 4)
   print(kurtoza)
   
   print("----Eksces-----")
@@ -190,10 +188,9 @@ getmode <- function(wektor)
   uniqv[which.max(tabulate(wektor))]
 }
 
-zad2 <-function(dane, wspolczynnik_ufnosci)
+zad7 <-function(dane, wspolczynnik_ufnosci)
 {
   wektor = sort(dane) 
-  
   
   l = ks.test(wektor,"pnorm", mean(wektor), sd(wektor))
   print(l)
@@ -208,7 +205,7 @@ zad2 <-function(dane, wspolczynnik_ufnosci)
   }
 }
 
-zad3 <-function(wektor, istotnosc)
+zad8 <-function(wektor, istotnosc)
 {
  
   cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", 18, "\n")
@@ -222,15 +219,15 @@ zad3 <-function(wektor, istotnosc)
   cat("\nPrzedzialy krytyczne: ( -oo, ",-(kwantylT),") u  (", kwantylT,",oo)\n")
   if( -kwantylT < t & t < kwantylT)                 
   {
-    print("Brak podstaw do odrzucenia hipotezy zerowej.")
+    cat("Brak podstaw do odrzucenia hipotezy zerowej.")
   }
   else
   {
-    print("Odrzucamy hipoteze zerowa na rzecz hipotezy alternatywnej.")
+    cat("Odrzucamy hipoteze zerowa na rzecz hipotezy alternatywnej.")
   }
 }
 
-zad4 <- function(dane, odchylenie_standardowe, alfa)
+zad9 <- function(dane, odchylenie_standardowe, alfa)
 {
   cat("Wartosc istotnosci testu: ", alfa, "\nWartosc odchylenia standardowego: ",odchylenie_standardowe,"\n")
   
@@ -285,7 +282,7 @@ test_fs <- function(wektor1,wektor2,alfa)
   }
 }
 
-zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
+zad_10t_student <- function(wektor1,wektor2,alfa)
 {
   wektor_szcz_1= sort(wektor1)
   wektor_szcz_2= sort(wektor2)
@@ -294,8 +291,7 @@ zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
   
   cat("Statystyka t studenta\n")
   test_t_studenta=t.test(wektor1,wektor2)
-  print("--------------------")
-  print(test_t_studenta)
+  cat(test_t_studenta)
  
   
   if(kwantyl<test_t_studenta$statistic)
@@ -309,18 +305,18 @@ zad_5_test_t_studenta <- function(wektor1,wektor2,alfa)
   }
 }
 
-zad_5_test_t_studenta_c_c <- function(wektor1,wektor2,alfa)
+zad_10t_student_c_c <- function(wektor1,wektor2,alfa)
 {
   cat("Statystyka Cochrana_Coxa\n")
   cat("Hipoteza zerowa: srednie sa rowne\nHipoteza alternatywna: Zawartość cukru w województwie lubuskim jest mniejsza niz w wojewodztwie wielkopolskim\n")
   
-  statystyka=(abs(mean(wektor1)-mean(wektor2)))/(sqrt(var(wektor1)/(length(wektor1))+var(wektor2)/(length(wektor2))))
-  kwantyl=((var(wektor1)/length(wektor1))*qt(1-alfa,length(wektor1)-1)+(var(wektor2)/length(wektor2))*qt(1-alfa,length(wektor2)-1))/((var(wektor1)/length(wektor1))+(var(wektor2)/length(wektor2))) 
+  statystyka = (abs(mean(wektor1)-mean(wektor2)))/(sqrt(var(wektor1)/(length(wektor1))+var(wektor2)/(length(wektor2))))
+  kwantyl = ((var(wektor1)/length(wektor1))*qt(1-alfa,length(wektor1)-1)+(var(wektor2)/length(wektor2))*qt(1-alfa,length(wektor2)-1))/((var(wektor1)/length(wektor1))+(var(wektor2)/length(wektor2))) 
   
   cat("Wartosc statystyki Cochrana coxa:",statystyka)
   cat("\nWartosc graniczna przedzialu krytycznego(najwyzsza):",kwantyl, "\n")
   
-  if(kwantyl<statystyka)
+  if(kwantyl < statystyka)
   {
     cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipotezy ze zawartosc cukru w wojew?dztwie lubuskim jest mniejsza niz w wojewodztwie wielkopolskim \n")
   }
@@ -330,16 +326,14 @@ zad_5_test_t_studenta_c_c <- function(wektor1,wektor2,alfa)
   }
 }
 
-zad5 <- function(wektor1,wektor2,alfa)
+zad10 <- function(wektor1,wektor2,alfa)
 {
-  if(test_fs(wektor1,wektor2,alfa)==1) #Je?eli warto?? statystki nale?y do obszaru krytycznego to uznajemy ?e wariancje r??ni? si? w spos?b znacz?cy 
-    #i w dalszej cz??ci zadania u?ywamy statystyki cochrana-coxa, je?eli statystyka nie nale?y do obszaru krytycznego
-    #to u?ywamy statystyki t-studenta. 
+  if(test_fs(wektor1,wektor2,alfa)==1) 
   {
-    zad_5_test_t_studenta(wektor1,wektor2,alfa)
+    zad_10t_student(wektor1,wektor2,alfa)
   }
   else
   {
-    zad_5_test_t_studenta_c_c(wektor1,wektor2,alfa)
+    zad_10t_student_c_c(wektor1,wektor2,alfa)
   }
 }
