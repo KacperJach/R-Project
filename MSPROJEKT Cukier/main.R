@@ -15,6 +15,5 @@ zad2(wielkopolskie$V1, 0.95)
 zad3(lubuskie$V1, 0.05)
 
 zad4(wielkopolskie$V1, 2, 0.05)
-test_fs(lubuskie$V1,wielkopolskie$V1,0.05)
 
 zad5(lubuskie$V1,wielkopolskie$V1,0.05)
