@@ -15,7 +15,7 @@ zad6_sz <- function(dane)
   print(sr_geo)
   
   print("----Moda-----")
-  print(getmode(dane))
+  print(moda(dane))
   
   print("----Kwartyl 1-----")
   kwartyl_1 = quantile(szereg_szcz, 0.25)
@@ -182,7 +182,7 @@ kwartyl <- function(szereg_roz, nr_kwartylu, dlugosc_danych, q)
   print(kw)
 }
 
-getmode <- function(wektor) 
+moda <- function(wektor) 
 {
   uniqv <- unique(wektor)
   uniqv[which.max(tabulate(wektor))]
@@ -208,10 +208,10 @@ zad7 <-function(dane, wspolczynnik_ufnosci)
 zad8 <-function(wektor, istotnosc)
 {
  
-  cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == ", 18, "\n")
+  cat("Poziom istotnosci testu: ", istotnosc, "\nHipoteza zerowa: przecietna == 18 \n")
   t = ((mean(wektor) - 18)*(sqrt(length(wektor) - 1)))/(sd(wektor))
   
-  cat("Hipoteza alternatywna: przecietna != ", 18,"\n")
+  cat("Hipoteza alternatywna: przecietna != 18 \n")
   cat("Wartosc statystyki:",t)
   
   kwantylT = qt(1-istotnosc/2, df=length(wektor) - 1)  
@@ -247,7 +247,7 @@ zad9 <- function(dane, odchylenie_standardowe, alfa)
   }
   else
   {
-    cat("Na poziomie istotnosci ", alfa, "mozemy odrzucic hipotezy,ze odchylenie standardowe zawartosci cukru w dostawach burakow cukrowych w wojewodztwie wielkopolskim jest rowne 2% ")
+    cat("Na poziomie istotnosci ", alfa, "odrzucamy hipoteze,ze odchylenie standardowe zawartosci cukru w dostawach burakow cukrowych w wojewodztwie wielkopolskim jest rowne 2% ")
   }
   cat('\n')
 }
@@ -293,7 +293,6 @@ zad_10t_student <- function(wektor1,wektor2,alfa)
   test_t_studenta=t.test(wektor1,wektor2)
   cat(test_t_studenta)
  
-  
   if(kwantyl<test_t_studenta$statistic)
   {
     cat("Na poziomie istotnosci ",alfa," mozna przyjac hipoteze zerowa \n")
@@ -304,7 +303,6 @@ zad_10t_student <- function(wektor1,wektor2,alfa)
   
   }
 }
-
 zad_10t_student_c_c <- function(wektor1,wektor2,alfa)
 {
   cat("Statystyka Cochrana_Coxa\n")
@@ -318,7 +316,7 @@ zad_10t_student_c_c <- function(wektor1,wektor2,alfa)
   
   if(kwantyl < statystyka)
   {
-    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipotezy ze zawartosc cukru w wojew?dztwie lubuskim jest mniejsza niz w wojewodztwie wielkopolskim \n")
+    cat("Na poziomie istotnosci ",alfa," nie mozna przyjac hipotezy ze zawartosc cukru w wojewodztwie lubuskim jest mniejsza niz w wojewodztwie wielkopolskim \n")
   }
   else
   {
